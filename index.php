@@ -4,6 +4,8 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 'posts';
 
 require_once __DIR__ . "/class/DB.php";
 require_once __DIR__ . "/class/User.php";
+require_once __DIR__ . "/class/Post.php";
+require_once __DIR__ . "/class/Category.php";
 $pdo = new DB();
 ?>
 
