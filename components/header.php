@@ -1,3 +1,16 @@
+<?php
+$category = new Category();
+$categories = $category->query("SELECT * FROM categories");
+
+$current_page = $_SERVER['REQUEST_URI'];
+if ((strpos($current_page, '/php-blog/?page=admin')) === 0 || (strpos($current_page, '/php-blog/?page=posts')) === 0) {
+    $disabled = '';
+} else {
+    $disabled = 'disabled';
+}
+
+?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -20,10 +33,14 @@
 
                 <div class="d-flex flex-wrap justify-content-center">
 
-                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                        <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-                    </form>
-
+                    <form class="form-category" method="get" action="">
+                        <select <?= $disabled ?> name="category_id" class="form-select form-category" aria-label="Default select example">
+                            <option value="" selected>Choose one...</option>
+                            <?php foreach ($categories as $category) : ?>
+                                <option value="<?= $category['id']; ?>"><?= $category['name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>       
+                        </form>
                     <div class="text-end">
                         <?php if (!isset($_SESSION['user'])) { ?>
                             <a class="btn dropdown-toggle text-light text-truncate" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -55,3 +72,12 @@
             </div>
         </nav>
     </header>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.form-category').addEventListener('change', () => {
+                document.querySelector('.form-category').submit();
+            })
+        })
+    </script>
